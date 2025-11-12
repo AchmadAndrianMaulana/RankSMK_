@@ -11,10 +11,13 @@ Fitur:
 ## Menjalankan
 
 ```bash
-python -m venv venv
+ekstrak file rar/zip
+buka visual studio code
+cari terminal di visual studio code
+ketik "python -m venv venv"
 source venv/bin/activate  # Windows: venv\Scripts\activate
-pip install -r requirements.txt
-python run.py
+ketik "pip install -r requirements.txt"
+ketik "python run.py"
 ```
 
 Buka: http://127.0.0.1:5000
