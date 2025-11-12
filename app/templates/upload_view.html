@@ -1,0 +1,50 @@
+{% extends "layout.html" %} {% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h4>Detail Upload</h4>
+  <div>
+    <a
+      class="btn btn-sm btn-outline-secondary"
+      href="{{ url_for('main.upload') }}"
+      >← Kembali</a
+    >
+  </div>
+</div>
+
+<div class="card mb-3">
+  <div class="card-body">
+    <div><strong>Nama File:</strong> {{ up.original_filename }}</div>
+    <div><strong>Diupload:</strong> {{ up.created_at }}</div>
+    <div>
+      <strong>Status:</strong> {% if up.processed_path %}Terproses{% else
+      %}Raw{% endif %}
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+  <li class="nav-item" role="presentation">
+  </li>
+</ul>
+<div class="tab-content border-start border-end border-bottom p-3">
+  <div
+    class="tab-pane fade show active"
+    id="raw"
+    role="tabpanel"
+    aria-labelledby="raw-tab"
+  >
+    <div class="table-responsive">{{ raw_html|safe }}</div>
+    <p class="text-muted mt-2">Menampilkan maksimal 100 baris pertama.</p>
+  </div>
+  <div
+    class="tab-pane fade"
+    id="proc"
+    role="tabpanel"
+    aria-labelledby="proc-tab"
+  >
+    <div class="table-responsive">{{ proc_html|safe }}</div>
+    <p class="text-muted mt-2">Menampilkan maksimal 100 baris pertama.</p>
+  </div>
+</div>
+{% endblock %}

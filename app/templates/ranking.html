@@ -1,0 +1,96 @@
+{% extends "layout.html" %}
+{% block content %}
+<h4 class="mb-3">Hasil Perangkingan (ROC–ARAS)</h4>
+
+<form method="POST" class="row g-2 mb-3">
+  {% if (use_combined|default(false)) %}
+    <!-- MODE: SATU FILTER (JurusanPeriode) -->
+    <div class="col-md-6">
+      <label class="form-label">Filter Kelas, Jurusan, dan Periode</label>
+      <select name="jurusanperiode" class="form-select">
+        <option value="">(Semua)</option>
+        {% for v in (jurusanperiode_values|default([])) %}
+          <option value="{{ v }}" {% if v == (selected_jurusanperiode|default('')) %}selected{% endif %}>{{ v }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  {% else %}
+    <!-- MODE: DUA FILTER (Jurusan & Periode) -->
+    <div class="col-md-4">
+      <label class="form-label">Filter Jurusan</label>
+      <select name="jurusan" class="form-select">
+        <option value="">(Semua)</option>
+        {% for j in (jurusan_values|default([])) %}
+          <option value="{{ j }}" {% if j == (selected_jurusan|default('')) %}selected{% endif %}>{{ j }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-md-4">
+      <label class="form-label">Filter Periode</label>
+      <select name="periode" class="form-select">
+        <option value="">(Semua)</option>
+        {% for p in (periode_values|default([])) %}
+          <option value="{{ p }}" {% if p == (selected_periode|default('')) %}selected{% endif %}>{{ p }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  {% endif %}
+
+  <div class="col-md-2 align-self-end">
+    <button class="btn btn-outline-primary w-100" type="submit">Terapkan</button>
+  </div>
+  <div class="col-md-2 align-self-end">
+    <a class="btn btn-success w-100" href="{{ download_url|default('#') }}">Download PDF</a>
+  </div>
+  <div class="col-md-2 align-self-end">
+    <a class="btn btn-outline-success w-100" href="{{ download_excel_url|default('#') }}">Download Excel</a>
+  </div>
+</form>
+
+<script>
+  // Ambil JSON yang sudah valid (tidak bercampur Jinja di dalam kode JS)
+  const labels = JSON.parse(document.getElementById('chart-labels').textContent || '[]');
+  const data   = JSON.parse(document.getElementById('chart-values').textContent || '[]');
+
+  const el = document.getElementById('chartTop');
+  const ctx = el.getContext('2d');
+
+  if (Array.isArray(labels) && Array.isArray(data) && labels.length && data.length) {
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Skor U_i (Top 10)',
+          data: data
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false
+      }
+    });
+  } else {
+    // fallback kalau belum ada data
+    ctx.font = '14px sans-serif';
+    ctx.fillText('Belum ada data untuk ditampilkan', 10, 20);
+  }
+</script>
+
+<div class="card mt-4">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <span class="fw-semibold">Tabel Hasil Perangkingan</span>
+    <span class="text-muted small">
+      {% if selected_jurusan %}Jurusan: <strong>{{ selected_jurusan }}</strong>{% endif %}
+      {% if selected_periode %} | Periode: <strong>{{ selected_periode }}</strong>{% endif %}
+      {% if selected_jurusanperiode %}JurusanPeriode: <strong>{{ selected_jurusanperiode }}</strong>{% endif %}
+    </span>
+  </div>
+  <div class="card-body">
+    <div class="table-responsive">
+      {{ (table_html|default('')) | safe }}
+    </div>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends "layout.html" %} {% block content %}
+
+<div class="container-xxl">
+  <!-- Upload -->
+  <h4 class="mb-3">Upload Data (Raw &amp; Proses Otomatis)</h4>
+
+  <form method="POST" enctype="multipart/form-data" class="mb-4">
+    {{ form.hidden_tag() }}
+    <div class="row g-2">
+      <div class="col-12 col-sm">{{ form.file(class="form-control") }}</div>
+      <div class="col-12 col-sm-auto d-grid">
+        {{ form.submit(class="btn btn-primary") }}
+      </div>
+    </div>
+  </form>
+
+  <h6 class="mb-2">Riwayat Upload</h6>
+  <div class="table-responsive">
+    <table class="table table-sm table-striped align-middle">
+      <thead class="table-light">
+        <tr>
+          <th class="text-nowrap">Waktu</th>
+          <th>File</th>
+          <th class="text-nowrap">Baris (processed)</th>
+          <th>Status</th>
+          <th class="text-end">Aksi</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if uploads and uploads|length > 0 %} {% for u in uploads %}
+        <tr>
+          <td class="text-nowrap">
+            {{ u.created_at.strftime('%Y-%m-%d %H:%M') if u.created_at else '-'
+            }}
+          </td>
+          <td>
+            <span
+              class="d-inline-block text-truncate"
+              style="max-width: 360px"
+              title="{{ u.original_filename }}"
+            >
+              {{ u.original_filename }}
+            </span>
+          </td>
+          <td class="text-center" style="width: 1%">{{ u.n_rows or '-' }}</td>
+          <td style="width: 1%">
+            {% if u.processed_path %}
+            <span class="badge text-bg-success">Terproses</span>
+            {% else %}
+            <span class="badge text-bg-secondary">Raw</span>
+            {% endif %}
+          </td>
+          <td class="text-end text-nowrap" style="width: 1%">
+            <a
+              class="btn btn-sm btn-outline-primary"
+              href="{{ url_for('main.upload_view', uid=u.id) }}"
+            >
+              Lihat
+            </a>
+          </td>
+        </tr>
+        {% endfor %} {% else %}
+        <tr>
+          <td colspan="5" class="text-center py-4 text-muted">
+            Belum ada riwayat upload.
+          </td>
+        </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ruang bawah sederhana -->
+  <div class="py-3"></div>
+</div>
+
+{% endblock %}

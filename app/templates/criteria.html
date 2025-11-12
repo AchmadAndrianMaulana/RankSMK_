@@ -1,0 +1,61 @@
+{% extends "layout.html" %} {% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h4>Kriteria</h4>
+</div>
+
+<form method="POST" class="row g-2 mb-4">
+  {{ form.hidden_tag() }}
+  <div class="col-md-4">
+    {{ form.name.label }} {{ form.name(class="form-control") }}
+  </div>
+  <div class="col-md-3">
+    {{ form.ctype.label }} {{ form.ctype(class="form-select") }}
+  </div>
+  <div class="col-md-2">
+    {{ form.display_order.label }} {{ form.display_order(class="form-control")
+    }}
+  </div>
+  <div class="col-md-2 align-self-end">
+    {{ form.submit(class="btn btn-primary w-100") }}
+  </div>
+</form>
+
+<table class="table table-sm table-striped align-middle">
+  <thead>
+    <tr>
+      <th>Urutan</th>
+      <th>Nama</th>
+      <th>Tipe</th>
+      <th>Bobot ROC</th>
+      <th>Aksi</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for c in items %}
+    <tr>
+      <td>{{ c.display_order }}</td>
+      <td>{{ c.name }}</td>
+      <td>{{ c.ctype }}</td>
+      <td>{{ "%.4f"|format(weights.get(c.name, 0)) }}</td>
+      <td>
+        <a
+          class="btn btn-sm btn-outline-secondary"
+          href="{{ url_for('main.criteria_edit', cid=c.id) }}"
+          >Edit</a
+        >
+        <form
+          method="POST"
+          action="{{ url_for('main.criteria_delete', cid=c.id) }}"
+          style="display: inline"
+          onsubmit="return confirm('Hapus?')"
+        >
+          <button class="btn btn-sm btn-outline-danger" type="submit">
+            Hapus
+          </button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

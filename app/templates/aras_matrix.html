@@ -1,0 +1,48 @@
+{% extends "layout.html" %} {% block content %}
+<h4 class="mb-3">Melihat Perhitungan ARAS</h4>
+
+<!-- 0) Bobot ROC per Kriteria -->
+<div class="mb-4">
+  <h6>Bobot ROC per Kriteria</h6>
+  <div class="table-responsive">{{ weights_html | safe }}</div>
+  <p class="text-muted mb-0">
+    Bobot dihitung otomatis berdasarkan urutan (ROC): urutan 1 = paling penting.
+  </p>
+</div>
+
+<!-- 1) Matriks A (dengan A0) -->
+<div class="mb-4">
+  <h6>Matriks A (dengan A0)</h6>
+  <div class="table-responsive">{{ sample_all | safe }}</div>
+</div>
+
+<!-- 2) Matriks Ternormalisasi -->
+<div class="mb-4">
+  <h6>Matriks Ternormalisasi</h6>
+  <div class="table-responsive">{{ sample_norm | safe }}</div>
+</div>
+
+<!-- 3) Matriks Ternormalisasi × Bobot -->
+<div class="mb-4">
+  <h6>
+    Menentukan Bobot Matriks yang Sudah Dinormalisasikan (Normalisasi × Bobot)
+  </h6>
+  <div class="table-responsive">{{ weighted_html | safe }}</div>
+  <p class="text-muted mb-0">
+    Setiap kolom kriteria dikalikan dengan bobot ROC-nya masing-masing.
+  </p>
+</div>
+
+<!-- 4) Nilai Fungsi Optimalisasi (Sᵢ) dan Utilitas (Uᵢ) -->
+<div class="mb-4">
+  <h6>Menentukan Nilai Fungsi Optimalisasi (Sᵢ) dan Uᵢ</h6>
+  <div class="table-responsive">{{ si_ui_html | safe }}</div>
+  <p class="text-muted mb-0">
+    Uᵢ = Sᵢ / S₀, dengan S₀ adalah nilai S pada A0 (solusi ideal).
+  </p>
+</div>
+
+<p class="text-muted">
+  Catatan: halaman ini menampilkan maksimal 20 baris sebagai pratinjau.
+</p>
+{% endblock %}

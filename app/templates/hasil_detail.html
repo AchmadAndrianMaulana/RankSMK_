@@ -1,0 +1,26 @@
+{% extends "layout.html" %} {% block content %}
+<h4>Kontribusi Kriteria — {{ alt }}</h4>
+<p class="text-muted">
+  Semakin besar kontribusi, semakin berpengaruh terhadap skor akhir.
+</p>
+<div class="table-responsive">{{ table_html|safe }}</div>
+<canvas id="chart" height="120"></canvas>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const rows = [...document.querySelectorAll("table tbody tr")].map((tr) => {
+    const tds = tr.querySelectorAll("td");
+    return { k: tds[0].innerText, p: parseFloat(tds[4].innerText) };
+  });
+  new Chart(document.getElementById("chart").getContext("2d"), {
+    type: "bar",
+    data: {
+      labels: rows.map((r) => r.k),
+      datasets: [{ label: "%", data: rows.map((r) => r.p) }],
+    },
+    options: { responsive: true, maintainAspectRatio: false },
+  });
+</script>
+<a href="{{ url_for('main.aras_ranking') }}" class="btn btn-secondary mt-3"
+  >← Kembali</a
+>
+{% endblock %}

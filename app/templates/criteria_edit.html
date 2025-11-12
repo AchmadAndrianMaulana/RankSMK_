@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+{% block content %}
+<h4 class="mb-3">Edit Kriteria</h4>
+<form method="POST" class="row g-2">
+  {{ form.hidden_tag() }}
+  <div class="col-md-4">{{ form.name.label }} {{ form.name(class="form-control") }}</div>
+  <div class="col-md-3">{{ form.ctype.label }} {{ form.ctype(class="form-select") }}</div>
+  <div class="col-md-2">{{ form.display_order.label }} {{ form.display_order(class="form-control") }}</div>
+  <div class="col-md-3 align-self-end">{{ form.submit(class="btn btn-success w-100") }}</div>
+</form>
+{% endblock %}

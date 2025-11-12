@@ -1,0 +1,26 @@
+{% extends "layout.html" %} {% block content %}
+<h4 class="mb-3">Edit Subkriteria</h4>
+
+<form method="POST" class="row g-2 mb-4">
+  {{ form.hidden_tag() }}
+
+  <div class="col-md-3">
+    {{ form.criteria_id.label }} {{ form.criteria_id(class="form-select") }}
+  </div>
+
+  <div class="col-md-4">
+    {{ form.name.label }} {{ form.name(class="form-control") }}
+  </div>
+
+  <div class="col-md-2">
+    {{ form.min_val.label }} {{ form.min_val(class="form-control") }}
+  </div>
+
+  <div class="col-md-3 d-flex align-items-end gap-2">
+    {{ form.submit(class="btn btn-primary") }}
+    <a href="{{ url_for('main.subcriteria_list') }}" class="btn btn-secondary"
+      >Batal</a
+    >
+  </div>
+</form>
+{% endblock %}

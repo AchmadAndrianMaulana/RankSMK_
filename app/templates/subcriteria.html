@@ -1,0 +1,63 @@
+{% extends "layout.html" %} {% block content %}
+<h4 class="mb-3">Subkriteria</h4>
+
+<form method="POST" class="row g-2 mb-4">
+  {{ form.hidden_tag() }}
+  <div class="col-md-3">
+    {{ form.criteria_id.label }} {{ form.criteria_id(class="form-select") }}
+  </div>
+  <div class="col-md-4">
+    {{ form.name.label }} {{ form.name(class="form-control") }}
+  </div>
+  <div class="col-md-2">
+    {{ form.min_val.label }} {{ form.min_val(class="form-control") }}
+  </div>
+  <div class="col-md-1 align-self-end">
+    {{ form.submit(class="btn btn-primary w-100") }}
+  </div>
+</form>
+
+<table class="table table-sm table-striped align-middle">
+  <thead>
+    <tr>
+      <th style="width: 28%">Kriteria</th>
+      <th>Nama Subkriteria</th>
+      <th style="width: 12%">Nilai</th>
+      <th style="width: 18%">Aksi</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% if items %} {% for s in items %}
+    <tr>
+      <td>{{ criteria_lookup.get(s.criteria_id, s.criteria_id) }}</td>
+      <td>{{ s.name }}</td>
+      <td>{{ s.min_val|default('', true) }}</td>
+      <td>
+        <div class="d-flex gap-2">
+          <a
+            class="btn btn-sm btn-outline-primary"
+            href="{{ url_for('main.subcriteria_edit', sid=s.id) }}"
+          >
+            Edit
+          </a>
+          <form
+            method="POST"
+            action="{{ url_for('main.subcriteria_delete', sid=s.id) }}"
+            onsubmit="return confirm('Hapus?')"
+            class="d-inline"
+          >
+            <button class="btn btn-sm btn-outline-danger" type="submit">
+              Hapus
+            </button>
+          </form>
+        </div>
+      </td>
+    </tr>
+    {% endfor %} {% else %}
+    <tr>
+      <td colspan="4" class="text-muted">Belum ada subkriteria.</td>
+    </tr>
+    {% endif %}
+  </tbody>
+</table>
+{% endblock %}

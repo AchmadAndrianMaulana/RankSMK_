@@ -1,0 +1,26 @@
+{% extends "layout.html" %} {% block content %}
+<h4>Panduan Pengguna</h4>
+<ol>
+  <li>
+    Upload Excel pada menu <b>Data Siswa</b> (gunakan template kolom yang sama).
+  </li>
+  <li>Atur <b>Kriteria</b> dan tipe (benefit/cost) sesuai kebutuhan.</li>
+  <li>
+    Buka <b>Hasil</b> untuk melihat perankingan, lalu unduh CSV/Excel (atau PDF
+    jika fitur itu diaktifkan).
+  </li>
+  <li>
+    Klik “Lihat” pada baris siswa (jika fitur drill-down diaktifkan) untuk
+    melihat kontribusi tiap kriteria.
+  </li>
+</ol>
+
+<h6>Catatan ROC–ARAS</h6>
+<ul>
+  <li><b>ROC</b>: bobot diambil dari urutan prioritas kriteria.</li>
+  <li>
+    <b>ARAS</b>: normalisasi → agregasi ber-bobot → skor U<sub>i</sub> →
+    ranking.
+  </li>
+</ul>
+{% endblock %}
